@@ -127,6 +127,24 @@
         });
 
         calculateButton.addEventListener('click', function() {
-            const condition
-::contentReference[oaicite:0]{index=0}
- 
+            const condition = conditionSelect.value;
+            const test = testSelect.value;
+            const testResult = document.querySelector('input[name="testResult"]:checked');
+            const preTestProb = parseFloat(document.getElementById('preTestProb').value);
+
+            if (!testResult || isNaN(preTestProb) || preTestProb < 0 || preTestProb > 100) {
+                alert('Please fill all fields correctly.');
+                return;
+            }
+
+            const lr = likelihoodRatios[condition][test][testResult.value];
+            const preTestOdds = preTestProb / (100 - preTestProb);
+            const postTestOdds = preTestOdds * lr;
+            const postTestProb = (postTestOdds / (1 + postTestOdds)) * 100;
+
+            resultDiv.textContent = `Post-Test Probability: ${postTestProb.toFixed(2)}%`;
+        });
+    </script>
+</body>
+</html>
+
